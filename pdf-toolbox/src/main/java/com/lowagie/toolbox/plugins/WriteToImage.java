@@ -2,31 +2,26 @@ package com.lowagie.toolbox.plugins;
 
 import java.awt.image.RenderedImage;
 import java.io.File;
-import java.io.FileOutputStream;
-
-import java.util.*;
 import java.io.*;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
 import java.awt.Color;
 import javax.imageio.ImageIO;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsDevice;
 import java.awt.RenderingHints;
 
-import javax.swing.JInternalFrame;
-
-import com.lowagie.text.Document;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.*;
-import com.lowagie.toolbox.AbstractTool;
-import com.lowagie.toolbox.arguments.AbstractArgument;
-import com.lowagie.toolbox.arguments.FileArgument;
-import com.lowagie.toolbox.arguments.IntegerArgument;
-import com.lowagie.toolbox.arguments.StringArgument;
-import com.lowagie.toolbox.arguments.filters.PdfFilter;
+
 
 public class WriteToImage {
+
+    /**
+     *
+     * @param src location of the pdf file to be exported into an image.
+     * @param out location of the image file to be exported.
+     * @param selection page of the pdf file to be exported into an image.
+     * @throws IOException
+     */
 
     private File src;
     private File out;
@@ -92,7 +87,7 @@ public class WriteToImage {
             RenderedImage ri = image;
             ImageIO.write(ri, "PNG", out);
 
-        } catch ( IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
