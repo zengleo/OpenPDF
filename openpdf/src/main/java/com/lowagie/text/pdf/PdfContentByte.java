@@ -224,7 +224,7 @@ public class PdfContentByte {
      */
     protected List<Integer> layerDepth;
 
-    private int lastFillAlpha = MAX_COLOR_VALUE;
+    // private int lastFillAlpha = MAX_COLOR_VALUE;
     private int lastStrokeAlpha = MAX_COLOR_VALUE;
 
     // Correction to apply to next moveText after calling LayoutProcessor.showText
@@ -2351,29 +2351,29 @@ public class PdfContentByte {
      */
     public void setColorStroke(Color color) {
         PdfXConformanceImp.checkPDFXConformance(writer, PdfXConformanceImp.PDFXKEY_COLOR, color);
-        int type = ExtendedColor.getType(color);
+        int type = getType(color);
         switch (type) {
-            case ExtendedColor.TYPE_GRAY: {
+            case TYPE_GRAY: {
                 final GrayColor grayColor = (GrayColor) color;
                 setGrayStroke(grayColor.getGray(), grayColor.getAlpha());
                 break;
             }
-            case ExtendedColor.TYPE_CMYK: {
+            case TYPE_CMYK: {
                 CMYKColor cmyk = (CMYKColor)color;
                 setCMYKColorStrokeF(cmyk.getCyan(), cmyk.getMagenta(), cmyk.getYellow(), cmyk.getBlack(), cmyk.getAlpha());
                 break;
             }
-            case ExtendedColor.TYPE_SEPARATION: {
+            case TYPE_SEPARATION: {
                 SpotColor spot = (SpotColor)color;
                 setColorStroke(spot.getPdfSpotColor(), spot.getTint());
                 break;
             }
-            case ExtendedColor.TYPE_PATTERN: {
+            case TYPE_PATTERN: {
                 PatternColor pat = (PatternColor) color;
                 setPatternStroke(pat.getPainter());
                 break;
             }
-            case ExtendedColor.TYPE_SHADING: {
+            case TYPE_SHADING: {
                 ShadingColor shading = (ShadingColor) color;
                 setShadingStroke(shading.getPdfShadingPattern());
                 break;
@@ -2399,29 +2399,29 @@ public class PdfContentByte {
      */
     public void setColorFill(Color color) {
         PdfXConformanceImp.checkPDFXConformance(writer, PdfXConformanceImp.PDFXKEY_COLOR, color);
-        int type = ExtendedColor.getType(color);
+        int type = getType(color);
         switch (type) {
-            case ExtendedColor.TYPE_GRAY: {
+            case TYPE_GRAY: {
                 GrayColor grayColor = (GrayColor) color;
                 setGrayFill(grayColor.getGray(), color.getAlpha() / MAX_INT_COLOR_VALUE);
                 break;
             }
-            case ExtendedColor.TYPE_CMYK: {
+            case TYPE_CMYK: {
                 CMYKColor cmyk = (CMYKColor) color;
                 setCMYKColorFillF(cmyk.getCyan(), cmyk.getMagenta(), cmyk.getYellow(), cmyk.getBlack(), cmyk.getAlpha() / MAX_INT_COLOR_VALUE);
                 break;
             }
-            case ExtendedColor.TYPE_SEPARATION: {
+            case TYPE_SEPARATION: {
                 SpotColor spot = (SpotColor) color;
                 setColorFill(spot.getPdfSpotColor(), spot.getTint());
                 break;
             }
-            case ExtendedColor.TYPE_PATTERN: {
+            case TYPE_PATTERN: {
                 PatternColor pat = (PatternColor) color;
                 setPatternFill(pat.getPainter());
                 break;
             }
-            case ExtendedColor.TYPE_SHADING: {
+            case TYPE_SHADING: {
                 ShadingColor shading = (ShadingColor) color;
                 setShadingFill(shading.getPdfShadingPattern());
                 break;
@@ -2437,7 +2437,7 @@ public class PdfContentByte {
             PdfGState gState = new PdfGState();
             gState.setFillOpacity(extendedColor.getAlpha() / MAX_INT_COLOR_VALUE);
             setGState(gState);
-            lastFillAlpha = extendedColor.getAlpha();
+            // lastFillAlpha = extendedColor.getAlpha();
             state.colorFill = extendedColor;
         }
     }
@@ -2495,25 +2495,25 @@ public class PdfContentByte {
      */
     void outputColorNumbers(Color color, float tint) {
         PdfXConformanceImp.checkPDFXConformance(writer, PdfXConformanceImp.PDFXKEY_COLOR, color);
-        int type = ExtendedColor.getType(color);
+        int type = getType(color);
         switch (type) {
-            case ExtendedColor.TYPE_RGB:
+            case TYPE_RGB:
                 content.append((float)(color.getRed()) / MAX_INT_COLOR_VALUE);
                 content.append(' ');
                 content.append((float)(color.getGreen()) / MAX_INT_COLOR_VALUE);
                 content.append(' ');
                 content.append((float)(color.getBlue()) / MAX_INT_COLOR_VALUE);
                 break;
-            case ExtendedColor.TYPE_GRAY:
+            case TYPE_GRAY:
                 content.append(((GrayColor)color).getGray());
                 break;
-            case ExtendedColor.TYPE_CMYK: {
+            case TYPE_CMYK: {
                 CMYKColor cmyk = (CMYKColor)color;
                 content.append(cmyk.getCyan()).append(' ').append(cmyk.getMagenta());
                 content.append(' ').append(cmyk.getYellow()).append(' ').append(cmyk.getBlack());
                 break;
             }
-            case ExtendedColor.TYPE_SEPARATION:
+            case TYPE_SEPARATION:
                 content.append(tint);
                 break;
             default:
@@ -2526,7 +2526,7 @@ public class PdfContentByte {
      * @param color the color of the pattern
      */
     public void setPatternFill(PdfPatternPainter p, Color color) {
-        if (ExtendedColor.getType(color) == ExtendedColor.TYPE_SEPARATION)
+        if (getType(color) == TYPE_SEPARATION)
             setPatternFill(p, color, ((SpotColor)color).getTint());
         else
             setPatternFill(p, color, 0);
@@ -2558,7 +2558,7 @@ public class PdfContentByte {
      * @param color the color of the pattern
      */
     public void setPatternStroke(PdfPatternPainter p, Color color) {
-        if (ExtendedColor.getType(color) == ExtendedColor.TYPE_SEPARATION)
+        if (getType(color) == TYPE_SEPARATION)
             setPatternStroke(p, color, ((SpotColor)color).getTint());
         else
             setPatternStroke(p, color, 0);
@@ -2985,7 +2985,7 @@ public class PdfContentByte {
      * @param height the height of the panel
      * @return a <CODE>Graphics2D</CODE>
      */
-    public java.awt.Graphics2D createGraphicsShapes(float width, float height) {
+    public Graphics2D createGraphicsShapes(float width, float height) {
         return new PdfGraphics2D(this, width, height, null, true, false, 0);
     }
 
@@ -2996,7 +2996,7 @@ public class PdfContentByte {
      * @param printerJob a printer job
      * @return a <CODE>Graphics2D</CODE>
      */
-    public java.awt.Graphics2D createPrinterGraphicsShapes(float width, float height, PrinterJob printerJob) {
+    public Graphics2D createPrinterGraphicsShapes(float width, float height, PrinterJob printerJob) {
         return new PdfPrinterGraphics2D(this, width, height, null, true, false, 0, printerJob);
     }
 
@@ -3006,7 +3006,7 @@ public class PdfContentByte {
      * @param height the height of the panel
      * @return a <CODE>Graphics2D</CODE>
      */
-    public java.awt.Graphics2D createGraphics(float width, float height) {
+    public Graphics2D createGraphics(float width, float height) {
         return new PdfGraphics2D(this, width, height, null, false, false, 0);
     }
 
@@ -3017,7 +3017,7 @@ public class PdfContentByte {
      * @param printerJob {@link PrinterJob}
      * @return a <CODE>Graphics2D</CODE>
      */
-    public java.awt.Graphics2D createPrinterGraphics(float width, float height, PrinterJob printerJob) {
+    public Graphics2D createPrinterGraphics(float width, float height, PrinterJob printerJob) {
         return new PdfPrinterGraphics2D(this, width, height, null, false, false, 0, printerJob);
     }
 
@@ -3029,7 +3029,7 @@ public class PdfContentByte {
      * @param quality quality fo the print
      * @return a <CODE>Graphics2D</CODE>
      */
-    public java.awt.Graphics2D createGraphics(float width, float height, boolean convertImagesToJPEG, float quality) {
+    public Graphics2D createGraphics(float width, float height, boolean convertImagesToJPEG, float quality) {
         return new PdfGraphics2D(this, width, height, null, false, convertImagesToJPEG, quality);
     }
 
@@ -3042,7 +3042,7 @@ public class PdfContentByte {
      * @param printerJob {@link PrinterJob}
      * @return a <CODE>Graphics2D</CODE>
      */
-    public java.awt.Graphics2D createPrinterGraphics(float width, float height, boolean convertImagesToJPEG, float quality, PrinterJob printerJob) {
+    public Graphics2D createPrinterGraphics(float width, float height, boolean convertImagesToJPEG, float quality, PrinterJob printerJob) {
         return new PdfPrinterGraphics2D(this, width, height, null, false, convertImagesToJPEG, quality, printerJob);
     }
 
@@ -3054,7 +3054,7 @@ public class PdfContentByte {
      * @param quality quality fo the print
      * @return A Graphics2D object
      */
-    public java.awt.Graphics2D createGraphicsShapes(float width, float height, boolean convertImagesToJPEG, float quality) {
+    public Graphics2D createGraphicsShapes(float width, float height, boolean convertImagesToJPEG, float quality) {
         return new PdfGraphics2D(this, width, height, null, true, convertImagesToJPEG, quality);
     }
 
@@ -3067,7 +3067,7 @@ public class PdfContentByte {
      * @param printerJob {@link PrinterJob}
      * @return a Graphics2D object
      */
-    public java.awt.Graphics2D createPrinterGraphicsShapes(float width, float height, boolean convertImagesToJPEG, float quality, PrinterJob printerJob) {
+    public Graphics2D createPrinterGraphicsShapes(float width, float height, boolean convertImagesToJPEG, float quality, PrinterJob printerJob) {
         return new PdfPrinterGraphics2D(this, width, height, null, true, convertImagesToJPEG, quality, printerJob);
     }
 
@@ -3078,7 +3078,7 @@ public class PdfContentByte {
      * @param fontMapper the mapping from awt fonts to <CODE>BaseFont</CODE>
      * @return a <CODE>Graphics2D</CODE>
      */
-    public java.awt.Graphics2D createGraphics(float width, float height, FontMapper fontMapper) {
+    public Graphics2D createGraphics(float width, float height, FontMapper fontMapper) {
         return new PdfGraphics2D(this, width, height, fontMapper, false, false, 0);
     }
 
@@ -3090,7 +3090,7 @@ public class PdfContentByte {
      * @param printerJob a printer job
      * @return a <CODE>Graphics2D</CODE>
      */
-    public java.awt.Graphics2D createPrinterGraphics(float width, float height, FontMapper fontMapper, PrinterJob printerJob) {
+    public Graphics2D createPrinterGraphics(float width, float height, FontMapper fontMapper, PrinterJob printerJob) {
         return new PdfPrinterGraphics2D(this, width, height, fontMapper, false, false, 0, printerJob);
     }
 
@@ -3103,7 +3103,7 @@ public class PdfContentByte {
      * @param quality the quality of the jpeg
      * @return a <CODE>Graphics2D</CODE>
      */
-    public java.awt.Graphics2D createGraphics(float width, float height, FontMapper fontMapper, boolean convertImagesToJPEG, float quality) {
+    public Graphics2D createGraphics(float width, float height, FontMapper fontMapper, boolean convertImagesToJPEG, float quality) {
         return new PdfGraphics2D(this, width, height, fontMapper, false, convertImagesToJPEG, quality);
     }
 
@@ -3117,7 +3117,7 @@ public class PdfContentByte {
      * @param printerJob a printer job
      * @return a <CODE>Graphics2D</CODE>
      */
-    public java.awt.Graphics2D createPrinterGraphics(float width, float height, FontMapper fontMapper, boolean convertImagesToJPEG, float quality, PrinterJob printerJob) {
+    public Graphics2D createPrinterGraphics(float width, float height, FontMapper fontMapper, boolean convertImagesToJPEG, float quality, PrinterJob printerJob) {
         return new PdfPrinterGraphics2D(this, width, height, fontMapper, false, convertImagesToJPEG, quality, printerJob);
     }
 
