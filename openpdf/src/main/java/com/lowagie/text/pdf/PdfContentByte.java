@@ -49,22 +49,15 @@
 
 package com.lowagie.text.pdf;
 
-import static com.lowagie.text.pdf.ExtendedColor.MAX_COLOR_VALUE;
-import static com.lowagie.text.pdf.ExtendedColor.MAX_FLOAT_COLOR_VALUE;
-import static com.lowagie.text.pdf.ExtendedColor.MAX_INT_COLOR_VALUE;
-
-import com.lowagie.text.Annotation;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Element;
-import com.lowagie.text.ExceptionConverter;
 import com.lowagie.text.Image;
-import com.lowagie.text.ImgJBIG2;
 import com.lowagie.text.Rectangle;
+import com.lowagie.text.*;
 import com.lowagie.text.error_messages.MessageLocalization;
 import com.lowagie.text.exceptions.IllegalPdfSyntaxException;
 import com.lowagie.text.pdf.internal.PdfAnnotationsImp;
 import com.lowagie.text.pdf.internal.PdfXConformanceImp;
-import java.awt.Color;
+
+import java.awt.*;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
@@ -74,6 +67,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.lowagie.text.pdf.ExtendedColor.*;
 
 /**
  * <CODE>PdfContentByte</CODE> is an object containing the user positioned
