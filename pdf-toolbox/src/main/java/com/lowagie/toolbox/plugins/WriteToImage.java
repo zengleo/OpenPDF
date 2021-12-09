@@ -7,26 +7,29 @@ import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
 import java.awt.Color;
 import javax.imageio.ImageIO;
-import java.awt.RenderingHints;
 
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.*;
 
+/**
+ * Exports an image of a pdf page
+ *
+ * @author Leo Zeng
+ */
 
 public class WriteToImage {
-
-    /**
-     *
-     * @param src location of the pdf file to be exported into an image.
-     * @param out location of the image file to be exported.
-     * @param selection page of the pdf file to be exported into an image.
-     * @throws IOException
-     */
 
     private File src;
     private File out;
     private int selection;
-    private RenderingHints renderingHints = null;
+
+    /**
+     * Reads a pdf page and exports an image file
+     *
+     * @param src location of the pdf file to be exported into an image.
+     * @param out location of the image file to be exported.
+     * @param selection page of the pdf file to be exported into an image.
+     */
 
     public WriteToImage(String src, String out, int selection){
         this.src = new File(src);
@@ -35,11 +38,24 @@ public class WriteToImage {
 
     }
 
+    /**
+     * Run to export image file
+     *
+     * @throws IOException
+     */
+
     public void main() throws IOException {
         PdfReader reader = new PdfReader(src.getAbsolutePath());
         final BufferedImage image = renderImage(reader, selection);
         writePNG(image,out);
     }
+
+    /**
+     * Builds image object to be exported
+     *
+     * @param reader PdfReader object pointing to the pdf file
+     * @param index page of the pdf file to be exported as an image
+     */
 
     private BufferedImage renderImage(PdfReader reader, int index){
         Rectangle box = reader.getCropBox(index);
@@ -75,12 +91,21 @@ public class WriteToImage {
         }
         g.clearRect(0, 0, image.getWidth(), image.getHeight());
 
+        // implement page drawer
+
         g.dispose();
 
         //image = ImageIO.read(new File("Capture.PNG"));
 
         return image;
     }
+
+    /**
+     * Exports image object to image file
+     *
+     * @param image image object of the pdf page
+     * @param out location of export file
+     */
 
     private static void writePNG(BufferedImage image, File out){
         try {
