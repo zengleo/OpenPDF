@@ -9,7 +9,8 @@ import java.awt.Color;
 import javax.imageio.ImageIO;
 
 import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.*;
+import com.lowagie.text.pdf.PdfReader;
+
 
 /**
  * Exports an image of a pdf page
